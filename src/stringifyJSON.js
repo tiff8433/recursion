@@ -4,7 +4,7 @@
 // but you don't so you're going to write it from scratch:
 
 var stringifyJSON = function(obj) {
-var newObj;
+
   // check to see if object is a number
   if(typeof obj === 'number'){
     //return string of number
@@ -20,13 +20,22 @@ var newObj;
     return '"' + obj + '"';
   }
   if(Array.isArray(obj)){
-    if(obj.length === 0){
-      return '[]';
-    }
-    newObj = 
-    for(var i = 1; i < obj.length; i++){
-
+    var results = [];
+    
+    for(var i = 0; i < obj.length; i++){
+      results.push(stringifyJSON(obj[i]));
     }
 
+    return '[' + results.join(",") + ']'; 
+  } else {
+    var results = [];
+
+    for(var key in obj){
+      if(typeof obj[key] === 'function' || obj[key] === undefined){
+        continue;
+      }
+      results.push(stringifyJSON(key) + ":" + stringifyJSON(obj[key]));
+    }
+    return '{' + results.join(",") + "}";
   }
 };
